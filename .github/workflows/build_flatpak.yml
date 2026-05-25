@@ -17,3 +17,22 @@ jobs:
         bundle: bottles.flatpak
         manifest-path: build-aux/com.usebottles.bottles.Devel.json
         cache-key: flatpak-builder-${{ github.sha }}
+    - name: "Extract All-in-One Offline Bundle"
+      run: |
+        # 兼容处理容器内 flatpak 仓库的可能驻留路径
+        REPO_PATH="/root/.local/share/flatpak/repo"
+        if [ ! -d "$REPO_PATH" ]; then REPO_PATH="/var/lib/flatpak/repo"; fi
+        
+        echo "正在使用本地仓库: $REPO_PATH 将 Gnome 47 运行时与应用融合成单文件..."
+        
+        # 使用 --runtime 参数强制把容器里现成的 gnome-47 依赖库打包进同一个 `.flatpak` 文件中
+        flatpak build-bundle --runtime \
+          "$REPO_PATH" \
+          bottles-all-in-one.flatpak \
+          com.usebottles.bottles.Devel
+
+    - name: "Upload Offline Package to Artifacts"
+      uses: actions/upload-artifact@v4
+      with:
+        name: Bottles-Gnome47-Offline
+        path: bottles-all-in-one.flatpak
