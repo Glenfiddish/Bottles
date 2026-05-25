@@ -25,8 +25,8 @@ jobs:
         
         echo "正在使用本地仓库: $REPO_PATH 将 Gnome 47 运行时与应用融合成单文件..."
 
-        REAL_ID=$(flatpak repo --location="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $2}')
-        REAL_BRANCH=$(flatpak repo --location="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $4}')
+        REAL_ID=$(flatpak repo --repository="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $2}')
+        REAL_BRANCH=$(flatpak repo --repository="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $4}')
         
         echo "ℹ️ 探测到真实的 App ID 为: $REAL_ID"
         echo "ℹ️ 探测到真实的分支为: $REAL_BRANCH"
