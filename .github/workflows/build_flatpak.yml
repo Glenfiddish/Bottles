@@ -22,6 +22,7 @@ jobs:
         # 兼容处理容器内 flatpak 仓库的可能驻留路径
         REPO_PATH="/root/.local/share/flatpak/repo"
         if [ ! -d "$REPO_PATH" ]; then REPO_PATH="/var/lib/flatpak/repo"; fi
+        flatpak remote-info --show-refs local file://"$REPO_PATH" || true
         
         echo "正在使用本地仓库: $REPO_PATH 将 Gnome 47 运行时与应用融合成单文件..."
         
