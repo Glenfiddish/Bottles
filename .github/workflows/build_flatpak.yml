@@ -22,12 +22,11 @@ jobs:
         # 兼容处理容器内 flatpak 仓库的可能驻留路径
         REPO_PATH="/root/.local/share/flatpak/repo"
         if [ ! -d "$REPO_PATH" ]; then REPO_PATH="/var/lib/flatpak/repo"; fi
-        flatpak remote-info --show-refs local file://"$REPO_PATH" || true
         
         echo "正在使用本地仓库: $REPO_PATH 将 Gnome 47 运行时与应用融合成单文件..."
 
-        REAL_ID=$(flatpak refs --repo="$REPO_PATH" | grep "app/" | head -n 1 | awk -F'/' '{print $2}')
-        REAL_BRANCH=$(flatpak refs --repo="$REPO_PATH" | grep "app/" | head -n 1 | awk -F'/' '{print $4}')
+        REAL_ID=$(flatpak repo --location="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $2}')
+        REAL_BRANCH=$(flatpak repo --location="$REPO_PATH" refs --app | grep "app/" | head -n 1 | awk -F'/' '{print $4}')
         
         echo "ℹ️ 探测到真实的 App ID 为: $REAL_ID"
         echo "ℹ️ 探测到真实的分支为: $REAL_BRANCH"
