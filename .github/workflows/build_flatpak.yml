@@ -24,19 +24,15 @@ jobs:
         if [ ! -d "$REPO_PATH" ]; then REPO_PATH="/var/lib/flatpak/repo"; fi
         
         echo "正在使用本地仓库: $REPO_PATH 将 Gnome 47 运行时与应用融合成单文件..."
-
-        REAL_ID=$(flatpak repo --branches "$REPO_PATH" | head -n 1)
-        REAL_BRANCH=$(flatpak repo --branches "$REPO_PATH" | head -n 1 | awk '{print $NF}')
-        
         echo "ℹ️ 探测到真实的 App ID 为: $REAL_ID"
         echo "ℹ️ 探测到真实的分支为: $REAL_BRANCH"
         
         # 使用 --runtime 参数强制把容器里现成的 gnome-47 依赖库打包进同一个 `.flatpak` 文件中
         flatpak build-bundle --runtime \
-          --branch="$REAL_BRANCH" \
+          --branch="main" \
           "$REPO_PATH" \
           bottles-all-in-one.flatpak \
-          "$REAL_ID"
+          com.usebottles.bottles
 
     - name: "Upload Offline Package to Artifacts"
       uses: actions/upload-artifact@v4
