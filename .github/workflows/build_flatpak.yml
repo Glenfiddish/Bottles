@@ -28,10 +28,11 @@ jobs:
         echo "ℹ️ 探测到真实的分支为: $REAL_BRANCH"
         
         # 使用 --runtime 参数强制把容器里现成的 gnome-47 依赖库打包进同一个 `.flatpak` 文件中
-        flatpak build-bundle --runtime \
+        flatpak build-bundle \
           "$REPO_PATH" \
           bottles-all-in-one.flatpak \
-          com.usebottles.bottles
+          com.usebottles.bottles \
+          main
 
     - name: "Upload Offline Package to Artifacts"
       uses: actions/upload-artifact@v4
