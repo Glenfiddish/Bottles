@@ -22,6 +22,15 @@ jobs:
         # 兼容处理容器内 flatpak 仓库的可能驻留路径
         REPO_PATH="/root/.local/share/flatpak/repo"
         if [ ! -d "$REPO_PATH" ]; then REPO_PATH="/var/lib/flatpak/repo"; fi
+
+        # 2. 动态从 ostree 仓库中提取真正生成的 app ref
+        # 结果形如：app/com.usebottles.bottles.Devel/x86_64/Devel
+        TARGET_REF=$(ostree refs --repo="$REPO_PATH" | grep "^app/" | head -n 1)
+
+        if [ -z "$TARGET_REF" ]; then
+          echo "❌ 错误：在仓库中未找到任何编译好的应用 Ref！"
+          exit 1
+        fi
         
         REAL_ID=$(echo "$TARGET_REF" | cut -d'/' -f2)
         REAL_BRANCH=$(echo "$TARGET_REF" | cut -d'/' -f4)
