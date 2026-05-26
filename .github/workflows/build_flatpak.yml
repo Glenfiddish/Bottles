@@ -29,7 +29,6 @@ jobs:
         
         # 使用 --runtime 参数强制把容器里现成的 gnome-47 依赖库打包进同一个 `.flatpak` 文件中
         flatpak build-bundle --runtime \
-          --branch="main" \
           "$REPO_PATH" \
           bottles-all-in-one.flatpak \
           com.usebottles.bottles
